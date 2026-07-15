@@ -46,6 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     refresh();
   });
 
+  // PDF download
+  document.getElementById('downloadPdf').addEventListener('click', () => {
+    try { PDFReport.generatePDF(); }
+    catch (e) { alert('Error al generar PDF: ' + e.message); }
+  });
+
   // Modal
   document.getElementById('modalClose').addEventListener('click', () => {
     document.getElementById('eventModal').classList.remove('open');
