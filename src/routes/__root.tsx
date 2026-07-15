@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Dashboard de Gestión de Prensa" },
+      { name: "description", content: "Dashboard ejecutivo para gestión de solicitudes de prensa y comunicaciones." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Dashboard de Gestión de Prensa" },
+      { property: "og:description", content: "Dashboard ejecutivo para gestión de solicitudes de prensa y comunicaciones." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Dashboard de Gestión de Prensa" },
+      { name: "twitter:description", content: "Dashboard ejecutivo para gestión de solicitudes de prensa y comunicaciones." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/08e82526-19aa-4ef3-93c6-d4f485d4d109/id-preview-bed081b9--981ecf25-4429-42ae-b2c9-3e8a2d1e2eb2.lovable.app-1784146315497.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/08e82526-19aa-4ef3-93c6-d4f485d4d109/id-preview-bed081b9--981ecf25-4429-42ae-b2c9-3e8a2d1e2eb2.lovable.app-1784146315497.png" },
     ],
     links: [
       {
