@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard de Gestión de Prensa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <i class="fa-solid fa-newspaper"></i>
+      <span>Prensa & Comunicaciones</span>
+    </div>
+    <nav>
+      <a href="#dashboard" class="nav-link active" data-section="dashboard"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <a href="#charts" class="nav-link" data-section="charts"><i class="fa-solid fa-chart-column"></i> Gráficos</a>
+      <a href="#calendar" class="nav-link" data-section="calendar"><i class="fa-solid fa-calendar-days"></i> Calendario</a>
+      <a href="#table" class="nav-link" data-section="table"><i class="fa-solid fa-table"></i> Tabla</a>
+      <a href="#stats" class="nav-link" data-section="stats"><i class="fa-solid fa-ranking-star"></i> Estadísticas</a>
+    </nav>
+    <div class="sidebar-footer">
+      <small>&copy; Comunicaciones</small>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="navbar">
+      <button class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+      <h1 id="pageTitle">Dashboard Ejecutivo</h1>
+      <div class="upload">
+        <label for="excelInput" class="btn btn-primary">
+          <i class="fa-solid fa-file-excel"></i> Cargar archivo Excel
+        </label>
+        <input type="file" id="excelInput" accept=".xlsx,.xls" hidden />
+        <span id="fileStatus" class="file-status">Sin datos cargados</span>
+      </div>
+    </header>
+
+    <section class="filters card" id="filters">
+      <div class="filter-item">
+        <label>Programa</label>
+        <select id="filterPrograma"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-item">
+        <label>Tipo</label>
+        <select id="filterTipo"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-item">
+        <label>Mes</label>
+        <select id="filterMes"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-item">
+        <label>Solicitante</label>
+        <select id="filterSolicitante"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-item">
+        <label>Lugar</label>
+        <select id="filterLugar"><option value="">Todos</option></select>
+      </div>
+      <button class="btn btn-outline" id="clearFilters"><i class="fa-solid fa-eraser"></i> Limpiar</button>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="section-dashboard" class="section active">
+      <div class="kpis" id="kpis"></div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Solicitudes por Programa</h3>
+          <canvas id="chartPrograma"></canvas>
+        </div>
+        <div class="card">
+          <h3>Solicitudes por Tipo</h3>
+          <canvas id="chartTipo"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Solicitudes por Mes</h3>
+        <canvas id="chartMes"></canvas>
+      </div>
+    </section>
+
+    <!-- CHARTS -->
+    <section id="section-charts" class="section">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Solicitudes por Día de la Semana</h3>
+          <canvas id="chartDia"></canvas>
+        </div>
+        <div class="card">
+          <h3>Top 10 Solicitantes</h3>
+          <canvas id="chartSolicitantes"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Top Lugares de Cubrimiento</h3>
+        <canvas id="chartLugares"></canvas>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="section-calendar" class="section">
+      <div class="card">
+        <div id="calendar"></div>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <section id="section-table" class="section">
+      <div class="card">
+        <table id="dataTable" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th>Fecha</th><th>Programa</th><th>Solicitante</th><th>Tipo</th><th>Lugar</th><th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="section-stats" class="section">
+      <div class="grid-3">
+        <div class="card"><h3>Top Programas</h3><ol id="topProgramas"></ol></div>
+        <div class="card"><h3>Top Solicitantes</h3><ol id="topSolicitantes"></ol></div>
+        <div class="card"><h3>Top Lugares</h3><ol id="topLugares"></ol></div>
+      </div>
+      <div class="grid-3">
+        <div class="card kpi"><span class="kpi-label">Promedio por semana</span><span class="kpi-value" id="avgSemana">-</span></div>
+        <div class="card kpi"><span class="kpi-label">Promedio por mes</span><span class="kpi-value" id="avgMes">-</span></div>
+        <div class="card kpi"><span class="kpi-label">Promedio por día</span><span class="kpi-value" id="avgDia">-</span></div>
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <div class="modal" id="eventModal">
+      <div class="modal-content card">
+        <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+        <h3 id="modalTitle">Detalle del evento</h3>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+<script src="js/excel.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/table.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
